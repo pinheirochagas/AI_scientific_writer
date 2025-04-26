@@ -1,10 +1,20 @@
-# Scientific Writer Versa
+# AI Scientific Writer
 
 A comprehensive agentic workflow for transforming scientific transcripts into publication-ready perspective articles.
 
 ## Overview
 
-Scientific Writer Versa is a specialized AI system that transforms spoken content into high-quality scientific articles with proper citations. The system implements a multi-agent workflow that handles the entire process from transcript conversion to citation management.
+AI Scientific Writer is a specialized AI system that transforms spoken content and presentation materials into high-quality scientific articles with proper citations. The system implements a multi-agent workflow that handles the entire process from transcript conversion to citation management.
+
+## Technical Implementation
+
+- Built with Python 3.11 and Microsoft Azure OpenAI via UCSF Versa
+- Uses specialized models based on task requirements:
+  - Whisper-3-large for audio transcription
+  - GPT-4o-2024-08-06 for slide captioning and citation scaffolding
+  - o1-2024-12-17 for draft generation and improvements
+- Processes run on an 8-vCPU virtual machine, requiring approximately 14 minutes per complete run
+- Implements structured data validation and comprehensive error handling
 
 ## Workflow Architecture
 
@@ -39,12 +49,8 @@ The system consists of seven specialized agents that work together in a pipeline
 - **Process**: Identifies statements requiring citations and inserts [REF] markers
 - **Output**: Article with reference markers
 
-### 6. Reference Matching Agent
-- **Input**: Marked article and PubMed search results
-- **Process**: Matches each reference marker with appropriate citations
-- **Output**: Complete article with formatted citations
 
-### 7. Reference Ranking Agent
+### 6. Reference Matching Agent
 - **Input**: Manuscript text and PubMed search results
 - **Process**: Extracts key statements and ranks available references by relevance
 - **Output**: Structured JSON with statements and ranked reference suggestions
@@ -53,31 +59,29 @@ The system consists of seven specialized agents that work together in a pipeline
 
 The workflow follows this sequence:
 
-1. PubMed agent retrieves relevant scientific literature
-2. Transcript is converted to a perspective article
-3. The article undergoes multiple review-improvement cycles:
-   - Review agent analyzes the article
-   - Improvement agent enhances based on feedback
-4. Reference markers are inserted at appropriate points
-5. References are matched to markers using PubMed results
+1. Audio and slides are processed into a unified transcript
+2. PubMed agent retrieves relevant scientific literature
+3. Draft generation creates an initial manuscript
+4. Citation scaffolding inserts reference placeholders
+5. Multiple review-improvement cycles enhance quality
+6. Reference resolution matches citations to appropriate sources
 
-Each output is saved with timestamps to maintain version history.
+Each output is saved to maintain version history.
 
 ## Key Features
 
+- **Multimodal Input Processing**: Handles both audio and visual content
 - **Iterative Improvement**: Multiple review-improvement cycles enhance quality
-- **Narrative Analysis**: Sophisticated text analytics for flow and transitions
 - **Citation Management**: Automated citation marking and matching
-- **Structured Output**: Each stage produces well-formatted outputs
-- **Versioning**: Timestamped files for tracking changes
+- **Semantic Matching**: Uses semantic similarity for reference resolution
+- **Computational Efficiency**: Complete pipeline runs in approximately 14 minutes
 
-## Technical Implementation
+## Outputs
 
-- Built with Azure OpenAI API
-- Uses different models based on task complexity
-- Implements Pydantic schemas for structured data validation
-- NLP techniques for text analysis (NLTK)
-- Comprehensive error handling and logging
+The system produces:
+- Formatted, citation-rich manuscript
+- Ranked references JSON file
+- Comprehensive intermediate outputs for reproducibility
 
 ## Usage
 
@@ -85,10 +89,3 @@ The system can be used through two main workflows:
 
 1. **Complete Pipeline** (main.py): Full workflow from transcript to cited article
 2. **Reference Management** (pipeline.py): Extract key statements and match references
-
-## Requirements
-
-- Python 3.8+
-- Azure OpenAI API access
-- NLTK and other dependencies
-- Internet connection for PubMed API access
