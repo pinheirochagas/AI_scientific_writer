@@ -1,0 +1,1 @@
+Error code: 400 - {'error': {'message': "Invalid schema for response_format 'StudyExtractionResult': In context=('properties', 'verbatim_context'), 'minLength' is not permitted.", 'type': 'invalid_request_error', 'param': 'response_format', 'code': None}}
